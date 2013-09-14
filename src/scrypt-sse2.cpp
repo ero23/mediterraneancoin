@@ -92,6 +92,7 @@ static inline void xor_salsa8_sse2(__m128i B[4], const __m128i Bx[4])
 	B[3] = _mm_add_epi32(B[3], X3);
 }
 #endif
+
 void scrypt_1024_1_1_256_sp_sse2(const char *input, char *output, char *scratchpad)
 {
 #ifdef __SSE2__

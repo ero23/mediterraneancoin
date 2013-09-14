@@ -4,9 +4,14 @@
 #include <stdint.h>
 static const int SCRYPT_SCRATCHPAD_SIZE = 131072 + 63;
 
-void scrypt_1024_1_1_256_sp_sse2(const char *input, char *output, char *scratchpad);
-void scrypt_1024_1_1_256_sp(const char *input, char *output, char *scratchpad);
+void scrypt_1024_1_1_256_sp_generic(const char *input, char *output, char *scratchpad);
 void scrypt_1024_1_1_256(const char *input, char *output);
+
+#if defined(_M_IX86) || defined(__i386__) || defined(__i386) || defined(_M_X64) || defined(__x86_64__) || defined(_M_AMD64)
+void scrypt_1024_1_1_256_sp_sse2(const char *input, char *output, char *scratchpad);
+extern void (*scrypt_1024_1_1_256_sp)(const char *input, char *output, char *scratchpad);
+extern void scrypt_detect_sse2(unsigned int cpuid_edx);
+#endif
 
 void
 PBKDF2_SHA256(const uint8_t *passwd, size_t passwdlen, const uint8_t *salt,
@@ -27,6 +32,5 @@ static inline void le32enc(void *pp, uint32_t x)
         p[2] = (x >> 16) & 0xff;
         p[3] = (x >> 24) & 0xff;
 }
-
 
 #endif
