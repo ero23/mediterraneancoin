@@ -99,6 +99,24 @@ contains(BITCOIN_NEED_QT_PLUGINS, 1) {
     QTPLUGIN += qcncodecs qjpcodecs qtwcodecs qkrcodecs qtaccessiblewidgets
 }
 
+contains(SSE2, 1) {
+    DEFINES += SSE2
+    ### XXX: Need QMAKE_EXTRA_COMPILERS to add -msse2 for scrypt-sse.cpp but not other source files
+    #   Needed to fix 32bit x86 builds.
+    #   Example: http://qt-project.org/forums/viewthread/9009
+    #   Example: http://qt.gitorious.org/qt/qt/raw/2a9ea11f4dea51f9e75036aab8e7a23f0eb4bd1f:src/gui/gui.pro 
+    #sse2_compiler.commands = $$QMAKE_CXX -c -Winline
+    #sse2_compiler.commands += -msse2
+    #sse2_compiler.commands += $(CXXFLAGS) $(INCPATH) ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT}
+    #sse2_compiler.dependency_type = TYPE_C
+    #sse2_compiler.output = ${QMAKE_VAR_OBJECTS_DIR}${QMAKE_FILE_BASE}$${first(QMAKE_EXT_OBJ)}
+    #sse2_compiler.input = SSE2_SOURCES
+    #sse2_compiler.variable_out = OBJECTS
+    #sse2_compiler.name = compiling[sse2] ${QMAKE_FILE_IN}
+    #silent:sse2_compiler.commands = @echo compiling[sse2] ${QMAKE_FILE_IN} && $$sse2_compiler.commands
+    #QMAKE_EXTRA_COMPILERS += sse2_compiler
+}
+
 INCLUDEPATH += src/leveldb/include src/leveldb/helpers
 LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
 !win32 {
@@ -280,6 +298,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/paymentserver.cpp \
     src/qt/rpcconsole.cpp \
     src/scrypt.cpp \
+    src/scrypt-sse2.cpp \
     src/noui.cpp \
     src/leveldb.cpp \
     src/txdb.cpp \
