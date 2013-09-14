@@ -60,7 +60,7 @@ script: |
   export LD_PRELOAD=/usr/lib/faketime/libfaketime.so.1
   export FAKETIME=$REFERENCE_DATETIME
   export TZ=UTC
-  make -f makefile.linux-mingw $MAKEOPTS DEPSDIR=$HOME/build litecoind.exe USE_UPNP=0 DEBUGFLAGS="-frandom-seed=litecoin"
+  make -f makefile.linux-mingw $MAKEOPTS DEPSDIR=$HOME/build litecoind.exe USE_UPNP=0 DEBUGFLAGS="-frandom-seed=litecoin" SSE2=1
   i586-mingw32msvc-strip litecoind.exe
   mkdir $OUTDIR/daemon
   cp litecoind.exe $OUTDIR/daemon

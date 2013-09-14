@@ -2234,6 +2234,8 @@ struct CBlockTemplate
     std::vector<int64_t> vTxSigOps;
 };
 
+extern unsigned int cpuid_edx;
+
 
 
 
