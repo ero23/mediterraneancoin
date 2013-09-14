@@ -28,6 +28,7 @@
  */
 
 #include "scrypt.h"
+#include "util.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
@@ -242,7 +243,7 @@ static inline void xor_salsa8(uint32_t B[16], const uint32_t Bx[16])
 	B[15] += x15;
 }
 
-void scrypt_1024_1_1_256_sp(const char *input, char *output, char *scratchpad)
+void scrypt_1024_1_1_256_sp_generic(const char *input, char *output, char *scratchpad)
 {
 	uint8_t B[128];
 	uint32_t X[32];
@@ -275,14 +276,34 @@ void scrypt_1024_1_1_256_sp(const char *input, char *output, char *scratchpad)
 	PBKDF2_SHA256((const uint8_t *)input, 80, B, 128, 1, (uint8_t *)output, 32);
 }
 
+#if defined(_M_IX86) || defined(__i386__) || defined(__i386)
+// XXX: SSE2 only on x86_64, no detection
+void (*scrypt_1024_1_1_256_sp)(const char *input, char *output, char *scratchpad);
+
+void scrypt_detect_sse2(unsigned int cpuid_edx)
+{
+    // XXX: ARCH_CPU_X86_64 always has SSE2, so detection should only be on 32bit x86_64, fix this later
+    if (cpuid_edx & 1<<26)
+    {
+        scrypt_1024_1_1_256_sp = &scrypt_1024_1_1_256_sp_sse2;
+        printf("cpuid_edx: SSE2 detected, using scrypt-sse2.\n");
+    }
+        else
+    {
+        scrypt_1024_1_1_256_sp = &scrypt_1024_1_1_256_sp_generic;
+        printf("cpuid_edx: SSE2 unavailable, using scrypt-generic.\n");
+    }
+}
+#endif
+
 void scrypt_1024_1_1_256(const char *input, char *output)
 {
 	char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
-#ifdef USE_SSE2
-        // todo: runtime detection at startup and use function pointer
-        if(1)
-          scrypt_1024_1_1_256_sp_sse2(input, output, scratchpad);
-        else
+#if defined(_M_IX86) || defined(__i386__) || defined(__i386) 
+        scrypt_1024_1_1_256_sp(input, output, scratchpad);
+#elif defined(_M_X64) || defined(__x86_64__) || (_M_AMD64)
+        scrypt_1024_1_1_256_sp_sse2(input, output, scratchpad);
+#else
+        scrypt_1024_1_1_256_sp_generic(input, output, scratchpad);
 #endif
-          scrypt_1024_1_1_256_sp(input, output, scratchpad);
 }
