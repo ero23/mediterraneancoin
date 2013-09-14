@@ -18,8 +18,21 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <openssl/crypto.h>
 
+
 #ifndef WIN32
 #include <signal.h>
+#endif
+
+#if defined(_M_IX86) || defined(__i386__) || defined(__i386) || defined(_M_X64) || defined(__x86_64__) || defined(_M_AMD64)
+#ifdef _MSC_VER
+// MSVC 64bit is unable to use inline asm
+#include <intrin.h>
+#else
+#ifndef WIN32
+// WIN32 gitian mingw32 lacks intrin.h and cpuid.h
+#include <cpuid.h>
+#endif
+#endif
 #endif
 
 using namespace std;
@@ -492,6 +505,30 @@ bool AppInit2(boost::thread_group& threadGroup)
     sigaction(SIGHUP, &sa_hup, NULL);
 #endif
 
+#if defined(_M_IX86) || defined(__i386__) || defined(__i386) || defined(_M_X64) || defined(__x86_64__) || defined(_M_AMD64)
+    // Obtain cpuid_edx to be tested for CPU features on x86 architecture hardware
+    unsigned int cpuid_edx=0;
+    unsigned int eax, ebx, ecx;
+//#if defined(WIN32) && defined(_MSC_VER)
+#if defined(WIN32)
+#if defined(_MSC_VER)
+    // MSVC
+    int x86cpuid[4];
+    __cpuid(x86cpuid, 1);
+    cpuid_edx = (unsigned int)buffer[3];
+#else
+    unsigned int dummy = 0;
+    unsigned int code = 1;
+    asm volatile("cpuid" :
+                 "=a" (dummy), "=b" (ebx), "=c" (ecx), "=d" (cpuid_edx) :
+                 "a" (code), "c" (0));
+#endif
+#else
+    /* gcc or clang on Linux, Mac etc. */
+    __get_cpuid(1, &eax, &ebx, &ecx, &cpuid_edx);
+#endif
+#endif
+
     // ********************************************************* Step 2: parameter interactions
 
     fTestNet = GetBoolArg("-testnet");
@@ -805,6 +842,11 @@ bool AppInit2(boost::thread_group& threadGroup)
         AddOneShot(strDest);
 
     // ********************************************************* Step 7: load block chain
+
+#if defined(_M_IX86) || defined(__i386__) || defined(__i386) || defined(_M_X64) || defined(__x86_64__) || defined(_M_AMD64)
+    // 32bit x86 except Intel Mac: Detect SSE2 and use it if available
+    scrypt_detect_sse2(cpuid_edx);
+#endif
 
     fReindex = GetBoolArg("-reindex");
 
