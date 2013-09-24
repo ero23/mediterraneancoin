@@ -5,7 +5,7 @@ http://www.mediterraneancoin.org
 
 Copyright (c) 2009-2013 Bitcoin Developers
 Copyright (c) 2009-2013 Litecoin Developers
-Copyright (c) 2013-2013 Mediterraneancoin Developers
+Copyright (c) 2013 Mediterraneancoin Developers
 
 What is Mediterraneancoin?
 ----------------
