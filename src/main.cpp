@@ -1079,8 +1079,8 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 3.5 * 24 * 60 * 60; // Mediterraneancoin: 3.5 days
-static const int64 nTargetSpacing = 1 * 60; // Mediterraneancoin: 2.5 minutes
+static const int64 nTargetTimespan = 1.5 * 24 * 60 * 60; // Mediterraneancoin: 1.5 days
+static const int64 nTargetSpacing = 1 * 60; // Mediterraneancoin: 1.0 minutes
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
 //
@@ -2760,7 +2760,7 @@ bool InitBlockIndex() {
         //   vMerkleTree: 97ddfbbae6
 
         // Genesis block
-        const char* pszTimestamp = "NY Times 05/Oct/2011 Steve Jobs, Apple’s Visionary, Dies at 56";
+        const char* pszTimestamp = "Sat, 28 Sep 2013 19:18:29 GMT U.S. watchdog allows delay to smooth transition to swaps trading";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
