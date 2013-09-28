@@ -1,7 +1,7 @@
 src/*.exe
-src/litecoin
-src/litecoind
-src/test_litecoin
+src/mediterraneancoin
+src/mediterraneancoind
+src/test_mediterraneancoin
 .*.swp
 *.*~*
 *.bak
@@ -9,17 +9,17 @@ src/test_litecoin
 *.orig
 *.o
 *.patch
-.litecoin
+.mediterraneancoin
 
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-litecoin-qt
-Litecoin-Qt.app
+mediterraneancoin-qt
+Mediterraneancoin-Qt.app
 
 # Unit-tests
 Makefile.test
-litecoin-qt_test
+mediterraneancoin-qt_test
 
 # Resources cpp
 qrc_*.cpp
