@@ -39,6 +39,13 @@
 #include <openssl/sha.h>
 #include <errno.h>
 
+static void blkcpy(uint8_t *, uint8_t *, size_t);
+static void blkxor(uint8_t *, uint8_t *, size_t);
+static void salsa20_8(uint8_t[64]);
+static void blockmix_salsa8(uint8_t *, uint8_t *, size_t);
+static uint64_t integerify(uint8_t *, size_t);
+static void smix(uint8_t *, size_t, uint64_t, uint8_t *, uint8_t *);
+
 static inline uint32_t be32dec(const void *pp)
 {
 	const uint8_t *p = (uint8_t const *)pp;
@@ -332,16 +339,44 @@ void scrypt_1024_1_1_256(const char *input, char *output)
 	scrypt_1024_1_1_256_sp(input, output, scratchpad);
 }
 
+void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
+
+	uint256 hashTarget = CBigNum().SetCompact(/*pblock->*/nBits).getuint256();
+
+	// H76=header[0..75] (len=76)
+
+	uint8_t * H76 = (uint8_t *) input;
+
+	// S76 = scrypt (H76, H76, 1024*16, 4, 4, 76) (len=76)
+
+	uint8_t S76[76];
+
+	crypto_scrypt((const uint8_t *)input, 76, (const uint8_t *)input, 76,
+			1024 * 16, 4, 4, &S76[0], 76);
+
+
+	// S76 = xor(H76, S76)
+
+	blkxor(&S76[0], &H76[0], 76);
+
+	// S76nonce = S76
+
+	// s256 = hash256(s76nonce)
+
+	// topmostZeroBits = countTopmostZeroBits(s256)
+
+	// byte [] sc256 = SCrypt.scryptJ(s256, s256, 1024*16, 8, 8, 32);
+
+	// byte [] maskedSc256 = and(sc256, mask)
+
+	// byte [] finalHash = xor(s256, maskedSc256 )
+
+}
 
 //////////////////////////////////////////////////////////////////////
 
 
-static void blkcpy(uint8_t *, uint8_t *, size_t);
-static void blkxor(uint8_t *, uint8_t *, size_t);
-static void salsa20_8(uint8_t[64]);
-static void blockmix_salsa8(uint8_t *, uint8_t *, size_t);
-static uint64_t integerify(uint8_t *, size_t);
-static void smix(uint8_t *, size_t, uint64_t, uint8_t *, uint8_t *);
+
 
 static void
 blkcpy(uint8_t * dest, uint8_t * src, size_t len)
@@ -580,4 +615,6 @@ err0:
 	/* Failure! */
 	return (-1);
 }
+
+
 
