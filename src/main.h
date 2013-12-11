@@ -1358,7 +1358,7 @@ public:
         uint256 thash;
         //scrypt_1024_1_1_256(BEGIN(nVersion), BEGIN(thash));
 
-        hybridScryptHash256( BEGIN(nVersion), BEGIN(thash), unsigned int nBits );
+        hybridScryptHash256( BEGIN(nVersion), BEGIN(thash), nBits );
 
         return thash;
     }

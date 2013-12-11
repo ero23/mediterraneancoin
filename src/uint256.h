@@ -293,7 +293,48 @@ public:
         return (!(a == b));
     }
 
+    int countTopmostZeroBits(uint32_t v) {
+        if (v == 0)
+            return 32;
 
+
+        for (int x = 31; x >= 0; x--) {
+           if ((v & (1L << x)) != 0)
+              return (31-x);
+        }
+
+        return 32;
+    }
+
+    int countTopmostZeroBits() {
+        int result = 0;
+
+        //mask = new byte[WIDTH];
+
+        for (int i = WIDTH-1; i >= 0; i--) {
+
+            int v = countTopmostZeroBits(pn[i]);
+
+            result += v;
+
+            if (v < 8) {
+
+            	/*
+                mask[i] = (byte) getMaskByte(v);
+
+                for (int h = i-1; h >= 0; h-- ) {
+                    if (h >= 0)
+                        mask[h] = (byte)255;
+                }
+                */
+
+                break;
+            }
+
+        }
+
+        return result;
+    }
 
     std::string GetHex() const
     {
