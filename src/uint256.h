@@ -306,9 +306,14 @@ public:
         return 32;
     }
 
-    int countTopmostZeroBits() {
+    int countTopmostZeroBits(base_uint& mask) {
         int result = 0;
 
+
+        if (mask.WIDTH != WIDTH) {
+        	printf("mask.WIDTH != WIDTH\n");
+        	return -1;
+        }
         //mask = new byte[WIDTH];
 
         for (int i = WIDTH-1; i >= 0; i--) {
@@ -317,16 +322,16 @@ public:
 
             result += v;
 
-            if (v < 8) {
+            if (v < 32) {
 
-            	/*
-                mask[i] = (byte) getMaskByte(v);
+
+                mask[i] =  0xFFFFFFFF >> 1;  // (byte) getMaskByte(v);
 
                 for (int h = i-1; h >= 0; h-- ) {
                     if (h >= 0)
-                        mask[h] = (byte)255;
+                        mask[h] = 0xFFFFFFFF;
                 }
-                */
+
 
                 break;
             }

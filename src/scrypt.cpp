@@ -975,10 +975,10 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	// get first 76 bytes of array, out of 80
 	uint8_t * H76 = (uint8_t *) input;
 
-	// S76 = scrypt (H76, H76, 1024*16, 4, 4, 76) (len=76)
 
 	uint8_t S76[80];
 
+	// S76 = scrypt (H76, H76, 1024*16, 4, 4, 76) (len=76)
 	crypto_scrypt(H76, 76, H76, 76,
 			1024 * multiplier, rParam, pParam, &S76[0], 76);
 
@@ -997,9 +997,18 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	uint256 s256 = Hash(S76, &S76[80]);
 			//Hash(BEGIN(S76[0]),END(S76[79]));
 
+	uint256 mask();
+
 	int topmostZeroBits = s256.countTopmostZeroBits();
 
 	// byte [] sc256 = SCrypt.scryptJ(s256, s256, 1024*16, 8, 8, 32);
+
+	uint8_t sc256[32];
+
+	crypto_scrypt((uint8_t * ) s256.pn, 32, (uint8_t * ) s256.pn, 32,
+			1024 * multiplier, rParam, pParam, &sc256[0], 32);
+
+	// prepare mask
 
 	// byte [] maskedSc256 = and(sc256, mask)
 
