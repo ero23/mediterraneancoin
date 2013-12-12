@@ -1017,7 +1017,7 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 
 	// byte [] finalHash = xor(s256, maskedSc256 )
 	for (size_t i = 0; i < 32; i++)
-		output[i] = s256.begin()[i] ^ maskedSc256;
+		output[i] = s256.begin()[i] ^ maskedSc256[i];
 }
 
 //////////////////////////////////////////////////////////////////////
