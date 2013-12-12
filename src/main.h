@@ -1309,7 +1309,14 @@ public:
 
     uint256 GetHash() const
     {
-        return Hash(BEGIN(nVersion), END(nNonce));
+        //return Hash(BEGIN(nVersion), END(nNonce));
+
+        uint256 thash;
+        //scrypt_1024_1_1_256(BEGIN(nVersion), BEGIN(thash));
+
+        hybridScryptHash256( BEGIN(nVersion), BEGIN(thash), nBits );
+
+        return thash;
     }
 
     int64 GetBlockTime() const
