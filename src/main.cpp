@@ -31,7 +31,7 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0x12a765e31ffd4059bada1e25190f6e98c99d9714d334efa41a195a7e7e04bfe2");
+uint256 hashGenesisBlock("0x18a6bc08bbccf51014875e97bae3925c41b0fd669c3d994f3844e880dc048d7c");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Mediterraneancoin: starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -2774,7 +2774,7 @@ bool InitBlockIndex() {
         block.nVersion = 1;
         block.nTime    = 1380408161; // 1380408161079
         block.nBits    = 0x1e0ffff0;
-        block.nNonce   = 1485872378;
+        block.nNonce   = 0;
 
         if (fTestNet)
         {
@@ -2787,7 +2787,7 @@ bool InitBlockIndex() {
         printf("%s\n", hash.ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256("0x3389dd8c7964df3f75723e42a936f627adb7f219d85b32282c8d3b47e42e59ad"));
+        assert(block.hashMerkleRoot == uint256("0x18a6bc08bbccf51014875e97bae3925c41b0fd669c3d994f3844e880dc048d7c"));
 
 //
         // If genesis block hash does not match, then generate new genesis hash.
