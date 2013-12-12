@@ -2773,7 +2773,7 @@ bool InitBlockIndex() {
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
         block.nTime    = 1380408161; // 1380408161079
-        block.nBits    = 0x1e0ffff0;
+        block.nBits    = 0xff0ffff0;
         block.nNonce   = 0;
 
         if (fTestNet)
@@ -2801,6 +2801,10 @@ bool InitBlockIndex() {
             char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
 
             printf("%s\n",hashTarget.ToString().c_str());
+
+
+
+
 
             assert(false);
 
