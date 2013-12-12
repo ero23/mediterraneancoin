@@ -325,11 +325,11 @@ public:
             if (v < 32) {
 
 
-                mask[i] =  0xFFFFFFFF >> 1;  // (byte) getMaskByte(v);
+                mask.begin()[i] =  0xFFFFFFFF >> 1;  // (byte) getMaskByte(v);
 
                 for (int h = i-1; h >= 0; h-- ) {
                     if (h >= 0)
-                        mask[h] = 0xFFFFFFFF;
+                        mask.begin()[h] = 0xFFFFFFFF;
                 }
 
 

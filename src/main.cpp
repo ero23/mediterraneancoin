@@ -1071,7 +1071,7 @@ uint256 static GetOrphanRoot(const CBlockHeader* pblock)
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy = 100 * COIN; // it was 50
+    int64 nSubsidy = 7 * COIN; // it was 50
 
     // Subsidy is cut in half every 840000 blocks, which will occur approximately every 4 years
     nSubsidy >>= (nHeight / 840000); // Mediterraneancoin: 840k blocks in ~4 years
@@ -1079,7 +1079,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 1.5 * 24 * 60 * 60; // Mediterraneancoin: 1.5 days
+static const int64 nTargetTimespan = 0.25 * 24 * 60 * 60; // Mediterraneancoin: 0.25 days
 static const int64 nTargetSpacing = 1 * 60; // Mediterraneancoin: 1.0 minutes
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
@@ -2765,7 +2765,7 @@ bool InitBlockIndex() {
         txNew.vin.resize(1);
         txNew.vout.resize(1);
         txNew.vin[0].scriptSig = CScript() << 486604799 << CBigNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
-        txNew.vout[0].nValue = 100 * COIN;
+        txNew.vout[0].nValue = 7 * COIN;
         txNew.vout[0].scriptPubKey = CScript() << ParseHex("040184710fa689ad5023690c80f3a49c8f13f8d45b8c857fbcbc8bc4a8e4d3eb4b10f4d4604fa08dce601aaf0f470216fe1b51850b4acf21b179c45070ac7b03a9") << OP_CHECKSIG;
         CBlock block;
         block.vtx.push_back(txNew);

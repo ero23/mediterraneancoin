@@ -968,7 +968,7 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	int rParam = dataFinal[pos][1];
 	int pParam = dataFinal[pos][2];
 
-	uint256 hashTarget = CBigNum().SetCompact(/*pblock->*/nBits).getuint256();
+	//uint256 hashTarget = CBigNum().SetCompact(/*pblock->*/nBits).getuint256();
 
 	// H76=header[0..75] (len=76)
 
@@ -1004,7 +1004,7 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	// byte [] sc256 = SCrypt.scryptJ(s256, s256, 1024*16, 8, 8, 32);
 	uint8_t sc256[32];
 
-	crypto_scrypt((uint8_t * ) s256.pn, 32, (uint8_t * ) s256.pn, 32,
+	crypto_scrypt((uint8_t * ) s256.begin(), 32, (uint8_t * ) s256.begin(), 32,
 			1024 * multiplier, rParam, pParam, &sc256[0], 32);
 
 	// prepare mask
@@ -1013,11 +1013,11 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	uint8_t maskedSc256[32];
 
 	for (size_t i = 0; i < 32; i++)
-		maskedSc256[i] = sc256[i] & mask[i];
+		maskedSc256[i] = sc256[i] & mask.begin()[i];
 
 	// byte [] finalHash = xor(s256, maskedSc256 )
 	for (size_t i = 0; i < 32; i++)
-		output[i] = s256[i] ^ maskedSc256;
+		output[i] = s256.begin()[i] ^ maskedSc256;
 }
 
 //////////////////////////////////////////////////////////////////////
