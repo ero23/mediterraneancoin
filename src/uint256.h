@@ -293,7 +293,7 @@ public:
         return (!(a == b));
     }
 
-    int countTopmostZeroBits(uint32_t v) {
+    int countTopmostZeroBits32(uint32_t v) {
         if (v == 0)
             return 32;
 
@@ -306,6 +306,19 @@ public:
         return 32;
     }
 
+    int countTopmostZeroBits(unsigned char v) {
+        if (v == 0)
+            return 8;
+
+
+        for (int x = 7; x >= 0; x--) {
+           if ((v & (1L << x)) != 0)
+              return (7-x);
+        }
+
+        return 8;
+    }
+
     int countTopmostZeroBits(base_uint& mask) {
         int result = 0;
 
@@ -316,22 +329,25 @@ public:
         }
         //mask = new byte[WIDTH];
 
-        for (int i = WIDTH-1; i >= 0; i--) {
+        for (int i = WIDTH*4-1; i >= 0; i--) {
 
-            int v = countTopmostZeroBits(pn[i]);
+            int v = countTopmostZeroBits(begin()[i]);
 
             result += v;
 
-            if (v < 32) {
+            printf("countTopmostZeroBits: i=%i, v=%i\n", i, v);
+
+            if (v < 8) {
 
 
-                mask.begin()[i] =  0xFFFFFFFF >> 1;  // (byte) getMaskByte(v);
+                mask.begin()[i] =  (unsigned char)(0xFF >> v);  // (byte) getMaskByte(v);
 
                 for (int h = i-1; h >= 0; h-- ) {
                     if (h >= 0)
-                        mask.begin()[h] = 0xFFFFFFFF;
+                        mask.begin()[h] = (unsigned char)0xFF;
                 }
 
+                printf("countTopmostZeroBits exit: %i\n", i);
 
                 break;
             }
