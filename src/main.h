@@ -1309,14 +1309,16 @@ public:
 
     uint256 GetHash() const
     {
-        //return Hash(BEGIN(nVersion), END(nNonce));
+        return Hash(BEGIN(nVersion), END(nNonce));
 
+    	/*
         uint256 thash;
         //scrypt_1024_1_1_256(BEGIN(nVersion), BEGIN(thash));
 
         hybridScryptHash256( BEGIN(nVersion), BEGIN(thash), nBits );
 
         return thash;
+        */
     }
 
     int64 GetBlockTime() const
@@ -1492,7 +1494,7 @@ public:
 
     void print() const
     {
-        printf("CBlock(hash=%s, input=%s, PoW=%s, ver=%d, hashPrevBlock=%s, hashMerkleRoot=%s, nTime=%u, nBits=%08x, nNonce=%u, vtx=%"PRIszu")\n",
+        printf("CBlock(hash=%s,\n input=%s,\n PoW=%s,\n ver=%d, hashPrevBlock=%s, hashMerkleRoot=%s, nTime=%u, nBits=%08x, nNonce=%u, vtx=%"PRIszu")\n",
             GetHash().ToString().c_str(),
             HexStr(BEGIN(nVersion),BEGIN(nVersion)+80,false).c_str(),
             GetPoWHash().ToString().c_str(),
