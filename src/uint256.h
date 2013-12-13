@@ -335,7 +335,7 @@ public:
 
             result += v;
 
-            printf("countTopmostZeroBits: i=%i, v=%i\n", i, v);
+            //printf("countTopmostZeroBits: i=%i, v=%i\n", i, v);
 
             if (v < 8) {
 
@@ -347,7 +347,7 @@ public:
                         mask.begin()[h] = (unsigned char)0xFF;
                 }
 
-                printf("countTopmostZeroBits exit: %i\n", i);
+                //printf("countTopmostZeroBits exit: %i\n", i);
 
                 break;
             }

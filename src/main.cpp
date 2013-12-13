@@ -1183,8 +1183,22 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits)
     bnTarget.SetCompact(nBits);
 
     // Check range
-    if (bnTarget <= 0 || bnTarget > bnProofOfWorkLimit)
+    if (bnTarget <= 0 || bnTarget > bnProofOfWorkLimit) {
+
+    	if (bnTarget <= 0)
+    		printf("bnTarget <= 0!!!\n");
+
+    	if (bnTarget > bnProofOfWorkLimit)
+    		printf("bnTarget > bnProofOfWorkLimit!!!\n");
+
+    	printf("nBits=%x\n", nBits);
+
+    	printf("bnTarget=%s\n", bnTarget.ToString(16).c_str());
+
+    	printf("bnProofOfWorkLimit=%s\n", bnProofOfWorkLimit.ToString(16).c_str());
+
         return error("CheckProofOfWork() : nBits below minimum work");
+    }
 
     // Check proof of work matches claimed amount
     if (hash > bnTarget.getuint256())
