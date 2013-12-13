@@ -962,11 +962,13 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 
 	int nSize = nBits >> 24;
 
-	int pos = sizeof(dataFinal) - 1 - nSize * 2;
+	int pos = /*sizeof(dataFinal)*/ 605 - 1 - nSize * 2;
 
 	int multiplier = dataFinal[pos][0];
 	int rParam = dataFinal[pos][1];
 	int pParam = dataFinal[pos][2];
+
+	printf("multiplier: %i, rParam: %i, pParam: %i\nsize: %i", multiplier, rParam, pParam, nSize);
 
 	//uint256 hashTarget = CBigNum().SetCompact(/*pblock->*/nBits).getuint256();
 
@@ -976,12 +978,23 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	uint8_t * H76 = (uint8_t *) input;
 
 
+	printf("H76: ");
+	for (int i = 0; i < 76; i++) {
+		printf("%2x ", (unsigned) H76[i] & 0xFF);
+	}
+	printf("\n");
+
 	uint8_t S76[80];
 
 	// S76 = scrypt (H76, H76, 1024*16, 4, 4, 76) (len=76)
 	crypto_scrypt(H76, 76, H76, 76,
 			1024 * multiplier, rParam, pParam, &S76[0], 76);
 
+	printf("scrypt: ");
+	for (int i = 0; i < sizeof(S76); i++) {
+		printf("%2x ", (unsigned) S76[i] & 0xFF);
+	}
+	printf("\n");
 
 	// S76 = xor(H76, S76)
 	blkxor(&S76[0], &H76[0], 76);
