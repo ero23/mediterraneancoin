@@ -53,7 +53,7 @@ static const int64 DUST_HARD_LIMIT = 10000;   // 0.0001 MED mininput
 static const int64 MAX_MONEY = 3400000 * COIN;
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
-static const int COINBASE_MATURITY = 200;
+static const int COINBASE_MATURITY = 100;
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 /** Maximum number of script-checking threads allowed */
@@ -1483,6 +1483,7 @@ public:
             return error("%s() : deserialize or I/O error", __PRETTY_FUNCTION__);
         }
 
+        printf("GetPoWHash() - 3\n");
         // Check the header
         if (!CheckProofOfWork(GetPoWHash(), nBits))
             return error("CBlock::ReadFromDisk() : errors in block header");
@@ -1494,6 +1495,8 @@ public:
 
     void print() const
     {
+    	printf("GetPoWHash() - 2\n");
+
         printf("CBlock(hash=%s,\n input=%s,\n PoW=%s,\n ver=%d, hashPrevBlock=%s, hashMerkleRoot=%s, nTime=%u, nBits=%08x, nNonce=%u, vtx=%"PRIszu")\n",
             GetHash().ToString().c_str(),
             HexStr(BEGIN(nVersion),BEGIN(nVersion)+80,false).c_str(),
