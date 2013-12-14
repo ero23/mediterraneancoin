@@ -31,7 +31,7 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0xd0697f10ca92cfbb28500b3b986c7a0ab291b583fd8d1e2a9b610c0c092a8f50");
+uint256 hashGenesisBlock("0x8fab022475e8ef1df71ec9e78c71bdef2c4b1806626bd6a5a1746b8d5e7bdb0a");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Mediterraneancoin: starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -577,7 +577,7 @@ bool CTransaction::CheckTransaction(CValidationState &state) const
 
     if (IsCoinBase())
     {
-        if (vin[0].scriptSig.size() < 2 || vin[0].scriptSig.size() > 104) { // it was 100
+        if (vin[0].scriptSig.size() < 2 || vin[0].scriptSig.size() > 120) { // it was 100
         	printf("coinbase script size: %i\n", vin[0].scriptSig.size());
             return state.DoS(100, error("CTransaction::CheckTransaction() : coinbase script size"));
         }
@@ -2776,7 +2776,7 @@ bool InitBlockIndex() {
         //   vMerkleTree: 97ddfbbae6
 
         // Genesis block
-        const char* pszTimestamp = "Sat, 28 Sep 2013 19:18:29 GMT U.S. watchdog allows delay to smooth transition to swaps trading";
+        const char* pszTimestamp = "12/14/2013 10:03 AM Members of the governing African National Congress pay final tributes to Nelson Mandela";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -2789,9 +2789,9 @@ bool InitBlockIndex() {
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1380408161; // 1380408161079
+        block.nTime    = 1387020299; // 1380408161079
         block.nBits    = 0x1e0ffff0;
-        block.nNonce   = 322013;
+        block.nNonce   = 82889;
 
         if (fTestNet)
         {
@@ -2804,7 +2804,7 @@ bool InitBlockIndex() {
         printf("%s\n", hash.ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256("0xa6f826c90f1dd65fa67f83b9c6a334d76d62574d4c3d36fa8bb730babe92ff79"));
+        assert(block.hashMerkleRoot == uint256("0xbf4f2bc176dddda8dad43c9302224e6c2b890663c29bcba6f5ad3b1b33d9ca1e"));
 
 //
         // If genesis block hash does not match, then generate new genesis hash.

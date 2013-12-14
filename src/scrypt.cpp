@@ -958,7 +958,24 @@ void scrypt_1024_1_1_256(const char *input, char *output)
 
 //////
 
+static unsigned int cachedNBits;
+static char cachedInput[80];
+static char cachedOutput[32];
+
 void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
+
+	if (cachedNBits == nBits && !memcmp(input, cachedInput, 80 * sizeof(char))) {
+		printf("hybridScryptHash256: cached result returned!\n");
+
+		memcpy(output, cachedOutput, 32 * sizeof(char));
+
+		return;
+	}
+
+	cachedNBits = nBits;
+	memcpy(cachedInput, input, 80 * sizeof(char));
+
+	//
 
 	int nSize = nBits >> 24;
 
@@ -1072,6 +1089,8 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 		output[i] = s256.begin()[i] ^ maskedSc256[i];
 
 	printf("hash: %s\n", ((uint256 * ) output)->GetHex().c_str());
+
+	memcpy(cachedOutput , output , 32 * sizeof(char));
 }
 
 //////////////////////////////////////////////////////////////////////
