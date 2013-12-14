@@ -16,11 +16,11 @@ The new algorithm is called "hybridScryptHash256".
 
  - 1 minute block targets
  - subsidy halves in 840k blocks (~4 years)
- - ~7.4 million total coins
+ - ~3.4 million total coins
 
 The rest is similar to Bitcoin.
  - 7 coins per block
- - 768 blocks to retarget difficulty
+ - 21600 blocks to retarget difficulty
 
 For more information, as well as an immediately useable, binary version of
 the Mediterraneancoin client sofware, see http://www.mediterraneancoin.org.

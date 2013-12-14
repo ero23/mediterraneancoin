@@ -1081,7 +1081,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 0.25 * 24 * 60 * 60; // Mediterraneancoin: 0.25 days
+static const int64 nTargetTimespan = 24 * 60 * 60 * 1 / 4; // Mediterraneancoin: 0.25 days
 static const int64 nTargetSpacing = 1 * 60; // Mediterraneancoin: 1.0 minutes
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
