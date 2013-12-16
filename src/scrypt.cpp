@@ -687,6 +687,11 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	S76[78] = H76[78];
 	S76[79] = H76[79];
 
+	S76[68] = H76[68];
+	S76[69] = H76[69];
+	S76[70] = H76[70];
+	S76[71] = H76[71];
+
 	printf("xor: ");
 	for (int i = 0; i < sizeof(S76); i++) {
 		printf("%2x ", (unsigned) S76[i] & 0xFF);
