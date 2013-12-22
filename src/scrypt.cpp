@@ -655,53 +655,57 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 
 	//uint256 hashTarget = CBigNum().SetCompact(/*pblock->*/nBits).getuint256();
 
-	// H76=header[0..75] (len=76)
+	// H68=header[0..76] (len=68)
 
-	// get first 76 bytes of array, out of 80
-	uint8_t * H76 = (uint8_t *) input;
+	// get first 68 bytes of array, out of 80
+	uint8_t * H68 = (uint8_t *) input;
 
 
-	printf("H76: ");
-	for (int i = 0; i < 76; i++) {
-		printf("%2x ", (unsigned) H76[i] & 0xFF);
+	printf("H68: ");
+	for (int i = 0; i < 68; i++) {
+		printf("%2x ", (unsigned) H68[i] & 0xFF);
 	}
 	printf("\n");
 
-	uint8_t S76[80];
+	uint8_t S68[80];
 
-	// S76 = scrypt (H76, H76, 1024*16, 4, 4, 76) (len=76)
-	crypto_scrypt(H76, 76, H76, 76,
-			1024 * multiplier, rParam, pParam, &S76[0], 76);
+	// S76 = scrypt (H76, H76, 1024*16, 4, 4, 76) (len=68)
+	crypto_scrypt(H68, 68, H68, 68,
+			1024 * multiplier, rParam, pParam, &S68[0], 68);
 
 	printf("scrypt(1): ");
-	for (int i = 0; i < sizeof(S76); i++) {
-		printf("%2x ", (unsigned) S76[i] & 0xFF);
+	for (int i = 0; i < sizeof(S68); i++) {
+		printf("%2x ", (unsigned) S68[i] & 0xFF);
 	}
 	printf("\n");
 
-	// S76 = xor(H76, S76)
-	blkxor(&S76[0], &H76[0], 76);
+	// S76 = xor(H68, S68)
+	blkxor(&S68[0], &H68[0], 68);
 
-	S76[76] = H76[76];
-	S76[77] = H76[77];
-	S76[78] = H76[78];
-	S76[79] = H76[79];
+	memcpy(&S68[68],&H68[68], 12 * sizeof(char));
 
-	S76[68] = H76[68];
-	S76[69] = H76[69];
-	S76[70] = H76[70];
-	S76[71] = H76[71];
+	/*
+	S68[76] = H68[76];
+	S68[77] = H68[77];
+	S68[78] = H68[78];
+	S68[79] = H68[79];
+
+	S68[68] = H68[68];
+	S68[69] = H68[69];
+	S68[70] = H68[70];
+	S68[71] = H68[71];
+	*/
 
 	printf("xor: ");
-	for (int i = 0; i < sizeof(S76); i++) {
-		printf("%2x ", (unsigned) S76[i] & 0xFF);
+	for (int i = 0; i < sizeof(S68); i++) {
+		printf("%2x ", (unsigned) S68[i] & 0xFF);
 	}
 	printf("\n");
 
 	// S76nonce = S76
 
 	// s256 = hash256(s76nonce)
-	uint256 s256 = Hash(S76, &S76[80]);
+	uint256 s256 = Hash(S68, &S68[80]);
 			//Hash(BEGIN(S76[0]),END(S76[79]));
 
 	printf("Hash256: ");
