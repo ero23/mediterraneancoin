@@ -31,7 +31,7 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0x9c34cebf033b69a6ac680e8fc3febb0b96a54d3323cd0ca2548bbd91fadd5d3d");
+uint256 hashGenesisBlock("0x542c03cac373e2700883705068e080c9536d69bee3890b6af8e2cb248dcca5c9");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 23); // Mediterraneancoin: starting difficulty is 1 / 2^12 ; // ~uint256(0) >> 20
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -2794,7 +2794,8 @@ bool InitBlockIndex() {
         block.nVersion = 1;
         block.nTime    = 1387020300; // 1380408161079
         block.nBits    = 0x1d0ffff0;
-        block.nNonce   = 58519604;
+        block.nNonce   = 0xa2fcb313; //330562722;
+        //
 
         if (fTestNet)
         {
