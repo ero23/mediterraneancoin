@@ -662,7 +662,7 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 
 
 	printf("H68: ");
-	for (int i = 0; i < 68; i++) {
+	for (int i = 0; i < 80; i++) {
 		printf("%2x ", (unsigned) H68[i] & 0xFF);
 	}
 	printf("\n");
