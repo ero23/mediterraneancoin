@@ -1122,7 +1122,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
     nSubsidy >>= (nHeight / 1036800); // Mediterraneancoin: 518k blocks in ~1 year
 */
 
-    int64 nSubsidy = 10000 * COIN;
+    int64 nSubsidy = 10000 * COIN / 1000;
 
     std::string cseed_str = prevHash.ToString().substr(7,7);
     const char* cseed = cseed_str.c_str();
@@ -1136,7 +1136,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
 
     if(nHeight < 100000)
     {
-            nSubsidy = (1 + rand) * COIN;
+            nSubsidy = (1 + rand) * COIN  / 1000;
     }
     else if(nHeight < 200000)
     {
@@ -1144,7 +1144,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
             cseed = cseed_str.c_str();
             seed = hex2long(cseed);
             rand1 = generateMTRandom(seed, 499999);
-            nSubsidy = (1 + rand1) * COIN;
+            nSubsidy = (1 + rand1) * COIN / 1000;
     }
     else if(nHeight < 300000)
     {
@@ -1152,7 +1152,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
             cseed = cseed_str.c_str();
             seed = hex2long(cseed);
             rand2 = generateMTRandom(seed, 249999);
-            nSubsidy = (1 + rand2) * COIN;
+            nSubsidy = (1 + rand2) * COIN / 1000;
     }
     else if(nHeight < 400000)
     {
@@ -1160,7 +1160,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
             cseed = cseed_str.c_str();
             seed = hex2long(cseed);
             rand3 = generateMTRandom(seed, 124999);
-            nSubsidy = (1 + rand3) * COIN;
+            nSubsidy = (1 + rand3) * COIN / 1000;
     }
     else if(nHeight < 500000)
     {
@@ -1168,7 +1168,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
             cseed = cseed_str.c_str();
             seed = hex2long(cseed);
             rand4 = generateMTRandom(seed, 62499);
-            nSubsidy = (1 + rand4) * COIN;
+            nSubsidy = (1 + rand4) * COIN / 1000;
     }
     else if(nHeight < 600000)
     {
@@ -1176,14 +1176,14 @@ int64 static GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
             cseed = cseed_str.c_str();
             seed = hex2long(cseed);
             rand5 = generateMTRandom(seed, 31249);
-            nSubsidy = (1 + rand5) * COIN;
+            nSubsidy = (1 + rand5) * COIN / 1000;
     }
+
+    nSubsidy >>= (nHeight / 1036800); // Mediterraneancoin: 518k blocks in ~1 year
 
 return nSubsidy + nFees;
 
 
-
-    return nSubsidy + nFees;
 }
 
 static const int64 nTargetTimespan = 24 * 60 * 60 * 1 / 4; // Mediterraneancoin: 0.25 days
