@@ -1099,12 +1099,12 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     	nSubsidy = 89 * COIN / 10;
     else if (nHeight <= 475000)
     	nSubsidy = 144 * COIN / 10;
-    else if (nHeight <= 518000)
+/*    else if (nHeight <= 777000)
     	nSubsidy = 233 * COIN / 10;
     else if (nHeight <= 777000)
-    	nSubsidy = 377 * COIN / 10;
+    	nSubsidy = 377 * COIN / 10;*/
     else
-    	nSubsidy = 440 * COIN / 10;
+    	nSubsidy = 233 * COIN / 10;
 
     // Subsidy is cut in half every 1036800 blocks, which will occur approximately every 2 years
     nSubsidy >>= (nHeight / 1036800); // Mediterraneancoin: 518k blocks in ~1 year

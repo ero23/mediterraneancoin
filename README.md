@@ -10,12 +10,13 @@ Copyright (c) 2013 Mediterraneancoin Developers
 What is Mediterraneancoin?
 ----------------
 
-Mediterraneancoin is a lite version of Bitcoin using a very experimental new proof-of-work algorithm.
+Mediterraneancoin is a lite version of Bitcoin using an experimental new proof-of-work algorithm.
 
 The new algorithm is called "hybridScryptHash256".
+It is described here: http://www.mediterraneancoin.org/hybridscrypthash256.pdf
 
  - 1 minute block targets
- - subsidy halves in 840k blocks (~4 years)
+ - subsidy halves in 1036k blocks (~1 years)
  - ~3.4 million total coins
 
 The rest is similar to Bitcoin.
