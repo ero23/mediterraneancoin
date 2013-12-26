@@ -14,6 +14,8 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_int.hpp>
 
 using namespace std;
 using namespace boost;
@@ -1071,8 +1073,22 @@ uint256 static GetOrphanRoot(const CBlockHeader* pblock)
     return pblock->GetHash();
 }
 
-int64 static GetBlockValue(int nHeight, int64 nFees)
+int static generateMTRandom(unsigned int s, int range)
 {
+	// if using boost 1.55:
+	// random::mt19937 gen(s);
+	boost::mt19937 gen(s);
+
+	boost::uniform_int<> dist(1, range);
+
+	// if using boost 1.55:
+    //random::uniform_int_distribution<> dist(1, range);
+    return dist(gen);
+}
+
+int64 static GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
+{
+/*
     int64 nSubsidy;// = 7 * COIN; // it was 50
 
     if (nHeight <= 10000)
@@ -1099,15 +1115,73 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     	nSubsidy = 89 * COIN / 10;
     else if (nHeight <= 475000)
     	nSubsidy = 144 * COIN / 10;
-/*    else if (nHeight <= 777000)
-    	nSubsidy = 233 * COIN / 10;
-    else if (nHeight <= 777000)
-    	nSubsidy = 377 * COIN / 10;*/
     else
     	nSubsidy = 233 * COIN / 10;
 
     // Subsidy is cut in half every 1036800 blocks, which will occur approximately every 2 years
     nSubsidy >>= (nHeight / 1036800); // Mediterraneancoin: 518k blocks in ~1 year
+*/
+
+    int64 nSubsidy = 10000 * COIN;
+
+    std::string cseed_str = prevHash.ToString().substr(7,7);
+    const char* cseed = cseed_str.c_str();
+    long seed = hex2long(cseed);
+    int rand = generateMTRandom(seed, 999999);
+    int rand1 = 0;
+    int rand2 = 0;
+    int rand3 = 0;
+    int rand4 = 0;
+    int rand5 = 0;
+
+    if(nHeight < 100000)
+    {
+            nSubsidy = (1 + rand) * COIN;
+    }
+    else if(nHeight < 200000)
+    {
+            cseed_str = prevHash.ToString().substr(7,7);
+            cseed = cseed_str.c_str();
+            seed = hex2long(cseed);
+            rand1 = generateMTRandom(seed, 499999);
+            nSubsidy = (1 + rand1) * COIN;
+    }
+    else if(nHeight < 300000)
+    {
+            cseed_str = prevHash.ToString().substr(6,7);
+            cseed = cseed_str.c_str();
+            seed = hex2long(cseed);
+            rand2 = generateMTRandom(seed, 249999);
+            nSubsidy = (1 + rand2) * COIN;
+    }
+    else if(nHeight < 400000)
+    {
+            cseed_str = prevHash.ToString().substr(7,7);
+            cseed = cseed_str.c_str();
+            seed = hex2long(cseed);
+            rand3 = generateMTRandom(seed, 124999);
+            nSubsidy = (1 + rand3) * COIN;
+    }
+    else if(nHeight < 500000)
+    {
+            cseed_str = prevHash.ToString().substr(7,7);
+            cseed = cseed_str.c_str();
+            seed = hex2long(cseed);
+            rand4 = generateMTRandom(seed, 62499);
+            nSubsidy = (1 + rand4) * COIN;
+    }
+    else if(nHeight < 600000)
+    {
+            cseed_str = prevHash.ToString().substr(6,7);
+            cseed = cseed_str.c_str();
+            seed = hex2long(cseed);
+            rand5 = generateMTRandom(seed, 31249);
+            nSubsidy = (1 + rand5) * COIN;
+    }
+
+return nSubsidy + nFees;
+
+
 
     return nSubsidy + nFees;
 }
@@ -1749,8 +1823,14 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
     if (fBenchmark)
         printf("- Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin)\n", (unsigned)vtx.size(), 0.001 * nTime, 0.001 * nTime / vtx.size(), nInputs <= 1 ? 0 : 0.001 * nTime / (nInputs-1));
 
-    if (vtx[0].GetValueOut() > GetBlockValue(pindex->nHeight, nFees))
-        return state.DoS(100, error("ConnectBlock() : coinbase pays too much (actual=%"PRI64d" vs limit=%"PRI64d")", vtx[0].GetValueOut(), GetBlockValue(pindex->nHeight, nFees)));
+    uint256 prevHash = 0;
+    if(pindex->pprev)
+    {
+            prevHash = pindex->pprev->GetBlockHash();
+    }
+
+    if (vtx[0].GetValueOut() > GetBlockValue(pindex->nHeight, nFees, prevHash))
+        return state.DoS(100, error("ConnectBlock() : coinbase pays too much (actual=%"PRI64d" vs limit=%"PRI64d")", vtx[0].GetValueOut(), GetBlockValue(pindex->nHeight, nFees, prevHash)));
 
     if (!control.Wait())
         return state.DoS(100, false);
@@ -4457,7 +4537,7 @@ CBlockTemplate* CreateNewBlock(CReserveKey& reservekey)
         nLastBlockSize = nBlockSize;
         printf("CreateNewBlock(): total size %"PRI64u"\n", nBlockSize);
 
-        pblock->vtx[0].vout[0].nValue = GetBlockValue(pindexPrev->nHeight+1, nFees);
+        pblock->vtx[0].vout[0].nValue = GetBlockValue(pindexPrev->nHeight+1, nFees, pindexPrev->GetBlockHash());
         pblocktemplate->vTxFees[0] = -nFees;
 
         // Fill in header
