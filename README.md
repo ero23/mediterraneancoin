@@ -3,9 +3,9 @@ Mediterraneancoin integration/staging tree
 
 http://www.mediterraneancoin.org
 
-Copyright (c) 2009-2013 Bitcoin Developers
-Copyright (c) 2009-2013 Litecoin Developers
-Copyright (c) 2013 Mediterraneancoin Developers
+Copyright (c) 2009-2013 Bitcoin Developers<br/>
+Copyright (c) 2009-2013 Litecoin Developers<br/>
+Copyright (c) 2013-2014 Mediterraneancoin Developers<br/>
 
 What is Mediterraneancoin?
 ----------------
@@ -33,14 +33,14 @@ blocks:<br/>
 1-100k   : random 0-1000 MediterraneanCoins reward<br/>
 100k—200k: 0-500 MediterraneanCoins reward<br/>
 200k—300k: 0-250 MediterraneanCoins reward<br/>
-300k—400k: 0-125,000 MediterraneanCoins reward<br/>
+300k—400k: 0-125 MediterraneanCoins reward<br/>
 400k—500k: 0-62 MediterraneanCoins reward<br/>
 500k-600k: 0-31 MediterraneanCoins reward<br/>
 &gt; 600k : 10 MediterraneanCoins reward (flat)<br/>
 <br/>
 after that, subsidy halves in 1036k blocks (~1 year)<br/>
 
- - 34 million total coins
+ - 300 million total coins
  
 
 For more information, as well as an immediately useable, binary version of

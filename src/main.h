@@ -50,7 +50,7 @@ static const int64 DUST_SOFT_LIMIT = 1000000; // 0.01 MED
 /** Dust Hard Limit, ignored as wallet inputs (mininput default) */
 static const int64 DUST_HARD_LIMIT = 10000;   // 0.0001 MED mininput
 /** No amount larger than this (in satoshi) is valid */
-static const int64 MAX_MONEY = 34000000 * COIN;
+static const int64 MAX_MONEY = 300000000 * COIN;
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
 static const int COINBASE_MATURITY = 100;
@@ -616,7 +616,7 @@ public:
     {
         // Large (in bytes) low-priority (new, small-coin) transactions
         // need a fee.
-        return dPriority > COIN * 1440 / 250;
+        return dPriority > COIN * 14400 / 250;
     }
 
     int64 GetMinFee(unsigned int nBlockSize=1, bool fAllowFree=true, enum GetMinFee_mode mode=GMF_BLOCK) const;
