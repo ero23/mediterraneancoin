@@ -1483,7 +1483,7 @@ public:
             return error("%s() : deserialize or I/O error", __PRETTY_FUNCTION__);
         }
 
-        printf("GetPoWHash() - 3\n");
+        //printf("GetPoWHash() - 3\n");
         // Check the header
         if (!CheckProofOfWork(GetPoWHash(), nBits))
             return error("CBlock::ReadFromDisk() : errors in block header");
@@ -1495,7 +1495,7 @@ public:
 
     void print() const
     {
-    	printf("GetPoWHash() - 2\n");
+    	//printf("GetPoWHash() - 2\n");
 
         printf("CBlock(hash=%s,\n input=%s,\n PoW=%s,\n ver=%d, hashPrevBlock=%s, hashMerkleRoot=%s, nTime=%u, nBits=%08x, nNonce=%u, vtx=%"PRIszu")\n",
             GetHash().ToString().c_str(),

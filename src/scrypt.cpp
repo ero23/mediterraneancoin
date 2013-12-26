@@ -628,10 +628,14 @@ static unsigned int cachedNBits;
 static char cachedInput[80];
 static char cachedOutput[32];
 
+#define DEBUG_POWALGO 0
+
 void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 
 	if (cachedNBits == nBits && !memcmp(input, cachedInput, 80 * sizeof(char))) {
-		printf("hybridScryptHash256: cached result returned!\n");
+		if (DEBUG_POWALGO) {
+			printf("hybridScryptHash256: cached result returned!\n");
+		}
 
 		memcpy(output, cachedOutput, 32 * sizeof(char));
 
@@ -645,13 +649,15 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 
 	int nSize = nBits >> 24;
 
-	int pos = /*sizeof(dataFinal)*/ 271 - 1 - nSize; // * 2;
+	int pos = /*sizeof(dataFinal)*/ 271 - 1 - nSize;
 
 	int multiplier = dataFinal[pos][0];
 	int rParam = dataFinal[pos][1];
 	int pParam = dataFinal[pos][2];
 
-	printf("multiplier: %i, rParam: %i, pParam: %i\nsize: %i", multiplier, rParam, pParam, nSize);
+	if (DEBUG_POWALGO) {
+		printf("multiplier: %i, rParam: %i, pParam: %i\nsize: %i", multiplier, rParam, pParam, nSize);
+	}
 
 	//uint256 hashTarget = CBigNum().SetCompact(/*pblock->*/nBits).getuint256();
 
@@ -660,12 +666,13 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	// get first 68 bytes of array, out of 80
 	uint8_t * H68 = (uint8_t *) input;
 
-
-	printf("H68: ");
-	for (int i = 0; i < 80; i++) {
-		printf("%2x ", (unsigned) H68[i] & 0xFF);
+	if (DEBUG_POWALGO) {
+		printf("H68: ");
+		for (int i = 0; i < 80; i++) {
+			printf("%2x ", (unsigned) H68[i] & 0xFF);
+		}
+		printf("\n");
 	}
-	printf("\n");
 
 	uint8_t S68[80];
 
@@ -673,34 +680,26 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	crypto_scrypt(H68, 68, H68, 68,
 			1024 * multiplier, rParam, pParam, &S68[0], 68);
 
-	printf("scrypt(1): ");
-	for (int i = 0; i < sizeof(S68); i++) {
-		printf("%2x ", (unsigned) S68[i] & 0xFF);
+	if (DEBUG_POWALGO) {
+		printf("scrypt(1): ");
+		for (int i = 0; i < sizeof(S68); i++) {
+			printf("%2x ", (unsigned) S68[i] & 0xFF);
+		}
+		printf("\n");
 	}
-	printf("\n");
 
 	// S76 = xor(H68, S68)
 	blkxor(&S68[0], &H68[0], 68);
 
 	memcpy(&S68[68],&H68[68], 12 * sizeof(char));
 
-	/*
-	S68[76] = H68[76];
-	S68[77] = H68[77];
-	S68[78] = H68[78];
-	S68[79] = H68[79];
-
-	S68[68] = H68[68];
-	S68[69] = H68[69];
-	S68[70] = H68[70];
-	S68[71] = H68[71];
-	*/
-
-	printf("xor: ");
-	for (int i = 0; i < sizeof(S68); i++) {
-		printf("%2x ", (unsigned) S68[i] & 0xFF);
+	if (DEBUG_POWALGO) {
+		printf("xor: ");
+		for (int i = 0; i < sizeof(S68); i++) {
+			printf("%2x ", (unsigned) S68[i] & 0xFF);
+		}
+		printf("\n");
 	}
-	printf("\n");
 
 	// S76nonce = S76
 
@@ -708,28 +707,32 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	uint256 s256 = Hash(S68, &S68[80]);
 			//Hash(BEGIN(S76[0]),END(S76[79]));
 
-	printf("Hash256: ");
-	//printf("%s\n",s256.GetHex().c_str());
+	if (DEBUG_POWALGO) {
+		printf("Hash256: ");
+		//printf("%s\n",s256.GetHex().c_str());
 
-	for (int i = 0; i < 32; i++) {
-		printf("%2x ", (unsigned) (s256.begin()[i]) & 0xFF);
+		for (int i = 0; i < 32; i++) {
+			printf("%2x ", (unsigned) (s256.begin()[i]) & 0xFF);
+		}
+		printf("\n");
 	}
-	printf("\n");
 
 
 	uint256 mask;
 
 	int topmostZeroBits = s256.countTopmostZeroBits(mask);
 
-	printf("topmostZeroBits: %i\n", topmostZeroBits);
+	if (DEBUG_POWALGO) {
+		printf("topmostZeroBits: %i\n", topmostZeroBits);
 
-	printf("mask: ");
-	//printf("%s\n",s256.GetHex().c_str());
+		printf("mask: ");
+		//printf("%s\n",s256.GetHex().c_str());
 
-	for (int i = 0; i < 32; i++) {
-		printf("%2x ", (unsigned) (mask.begin()[i]) & 0xFF);
+		for (int i = 0; i < 32; i++) {
+			printf("%2x ", (unsigned) (mask.begin()[i]) & 0xFF);
+		}
+		printf("\n");
 	}
-	printf("\n");
 
 
 	// byte [] sc256 = SCrypt.scryptJ(s256, s256, 1024*16, 8, 8, 32);
@@ -738,11 +741,13 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	crypto_scrypt((uint8_t * ) s256.begin(), 32, (uint8_t * ) s256.begin(), 32,
 			1024 * multiplier, rParam, pParam, &sc256[0], 32);
 
-	printf("scrypt(2): ");
-	for (int i = 0; i < sizeof(sc256); i++) {
-		printf("%2x ", (unsigned) sc256[i] & 0xFF);
+	if (DEBUG_POWALGO) {
+		printf("scrypt(2): ");
+		for (int i = 0; i < sizeof(sc256); i++) {
+			printf("%2x ", (unsigned) sc256[i] & 0xFF);
+		}
+		printf("\n");
 	}
-	printf("\n");
 
 
 	// prepare mask
@@ -753,17 +758,21 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	for (size_t i = 0; i < 32; i++)
 		maskedSc256[i] = sc256[i] & mask.begin()[i];
 
-	printf("maskedSc256: ");
-	for (int i = 0; i < sizeof(maskedSc256); i++) {
-		printf("%2x ", (unsigned) maskedSc256[i] & 0xFF);
+	if (DEBUG_POWALGO) {
+		printf("maskedSc256: ");
+		for (int i = 0; i < sizeof(maskedSc256); i++) {
+			printf("%2x ", (unsigned) maskedSc256[i] & 0xFF);
+		}
+		printf("\n");
 	}
-	printf("\n");
 
 	// byte [] finalHash = xor(s256, maskedSc256 )
 	for (size_t i = 0; i < 32; i++)
 		output[i] = s256.begin()[i] ^ maskedSc256[i];
 
-	printf("hash: %s\n", ((uint256 * ) output)->GetHex().c_str());
+	if (DEBUG_POWALGO) {
+		printf("hash: %s\n", ((uint256 * ) output)->GetHex().c_str());
+	}
 
 	memcpy(cachedOutput , output , 32 * sizeof(char));
 }
