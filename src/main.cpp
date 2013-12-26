@@ -1073,10 +1073,41 @@ uint256 static GetOrphanRoot(const CBlockHeader* pblock)
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy = 7 * COIN; // it was 50
+    int64 nSubsidy;// = 7 * COIN; // it was 50
 
-    // Subsidy is cut in half every 840000 blocks, which will occur approximately every 4 years
-    nSubsidy >>= (nHeight / 840000); // Mediterraneancoin: 840k blocks in ~4 years
+    if (nHeight <= 10000)
+    	nSubsidy = 1 * COIN / 10;
+    else if (nHeight <= 40000)
+    	nSubsidy = 1 * COIN / 10;
+    else if (nHeight <= 86000)
+    	nSubsidy = 2 * COIN / 10;
+    else if (nHeight <= 129000)
+    	nSubsidy = 3 * COIN / 10;
+    else if (nHeight <= 172000)
+    	nSubsidy = 5 * COIN / 10;
+    else if (nHeight <= 216000)
+    	nSubsidy = 8 * COIN / 10;
+    else if (nHeight <= 259000)
+    	nSubsidy = 13 * COIN / 10;
+    else if (nHeight <= 302000)
+    	nSubsidy = 21 * COIN / 10;
+    else if (nHeight <= 345000)
+    	nSubsidy = 34 * COIN / 10;
+    else if (nHeight <= 388000)
+    	nSubsidy = 55 * COIN / 10;
+    else if (nHeight <= 432000)
+    	nSubsidy = 89 * COIN / 10;
+    else if (nHeight <= 475000)
+    	nSubsidy = 144 * COIN / 10;
+    else if (nHeight <= 518000)
+    	nSubsidy = 233 * COIN / 10;
+    else if (nHeight <= 777000)
+    	nSubsidy = 377 * COIN / 10;
+    else
+    	nSubsidy = 440 * COIN / 10;
+
+    // Subsidy is cut in half every 1036800 blocks, which will occur approximately every 2 years
+    nSubsidy >>= (nHeight / 1036800); // Mediterraneancoin: 518k blocks in ~1 year
 
     return nSubsidy + nFees;
 }
