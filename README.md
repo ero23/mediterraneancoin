@@ -30,17 +30,17 @@ If the correspondent CPU power is not available, then the HASH256 compunting pow
 Special reward system: random block rewards
 
 blocks:<br/>
-1-100k   : random 0-1000 MediterraneanCoins reward<br/>
-100k—200k: 0-500 MediterraneanCoins reward<br/>
-200k—300k: 0-250 MediterraneanCoins reward<br/>
-300k—400k: 0-125 MediterraneanCoins reward<br/>
-400k—500k: 0-62 MediterraneanCoins reward<br/>
-500k-600k: 0-31 MediterraneanCoins reward<br/>
-&gt; 600k : 10 MediterraneanCoins reward (flat)<br/>
+1-100k   : random 1-100 MediterraneanCoins reward<br/>
+100k—200k: 1-200 MediterraneanCoins reward<br/>
+200k—300k: 1-150 MediterraneanCoins reward<br/>
+300k—400k: 1-100 MediterraneanCoins reward<br/>
+400k—500k: 1-70 MediterraneanCoins reward<br/>
+500k-600k: 1-40 MediterraneanCoins reward<br/>
+&gt; 600k : 20 MediterraneanCoins reward (flat)<br/>
 <br/>
 after that, subsidy halves in 1036k blocks (~1 year)<br/>
 
- - 300 million total coins
+ - 100 million total coins
  
 
 For more information, as well as an immediately useable, binary version of
