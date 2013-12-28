@@ -565,7 +565,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     if (fDaemon)
         fServer = true;
     else
-        fServer = GetBoolArg("-server", true); // added true, because with server=false the wallet crashes on getwork request
+        fServer = GetBoolArg("-server", false); //  take care: with server=false the wallet crashes on getwork request
 
     /* force fServer when running without GUI */
 #if !defined(QT_GUI)
