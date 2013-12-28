@@ -735,7 +735,7 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 	}
 
 
-	// byte [] sc256 = SCrypt.scryptJ(s256, s256, 1024*16, 8, 8, 32);
+	// byte [] sc256 = SCrypt.scryptJ(s256, s256, ....,  32);
 	uint8_t sc256[32];
 
 	crypto_scrypt((uint8_t * ) s256.begin(), 32, (uint8_t * ) s256.begin(), 32,
