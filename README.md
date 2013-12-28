@@ -40,7 +40,7 @@ blocks:<br/>
 <br/>
 after that, subsidy halves in 1036k blocks (~1 year)<br/>
 
- - 100 million total coins
+ - 200 million total coins
  
 
 For more information, as well as an immediately useable, binary version of

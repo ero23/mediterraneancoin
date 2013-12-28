@@ -661,7 +661,7 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 
 	//uint256 hashTarget = CBigNum().SetCompact(/*pblock->*/nBits).getuint256();
 
-	// H68=header[0..76] (len=68)
+	// H68=header[0..68] (len=68)
 
 	// get first 68 bytes of array, out of 80
 	uint8_t * H68 = (uint8_t *) input;
@@ -676,7 +676,7 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 
 	uint8_t S68[80];
 
-	// S76 = scrypt (H76, H76, 1024*16, 4, 4, 76) (len=68)
+	// S68 = scrypt (H68, H68, ...., 68) (len=68)
 	crypto_scrypt(H68, 68, H68, 68,
 			1024 * multiplier, rParam, pParam, &S68[0], 68);
 
@@ -688,7 +688,7 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 		printf("\n");
 	}
 
-	// S76 = xor(H68, S68)
+	// S68 = xor(H68, S68)
 	blkxor(&S68[0], &H68[0], 68);
 
 	memcpy(&S68[68],&H68[68], 12 * sizeof(char));
@@ -701,9 +701,9 @@ void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 		printf("\n");
 	}
 
-	// S76nonce = S76
+	// S68nonce = S68
 
-	// s256 = hash256(s76nonce)
+	// s256 = hash256(s68nonce)
 	uint256 s256 = Hash(S68, &S68[80]);
 			//Hash(BEGIN(S76[0]),END(S76[79]));
 
