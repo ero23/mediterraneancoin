@@ -53,6 +53,7 @@ enum RPCErrorCode
     // P2P client errors
     RPC_CLIENT_NOT_CONNECTED        = -9,  // Bitcoin is not connected
     RPC_CLIENT_IN_INITIAL_DOWNLOAD  = -10, // Still downloading initial blocks
+    RPC_CLIENT_SERVER_NOT_RUNNING   = -23, // getwork request requires -server=true startup option
 
     // Wallet errors
     RPC_WALLET_ERROR                = -4,  // Unspecified problem with wallet (key not found etc.)

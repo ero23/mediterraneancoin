@@ -97,6 +97,9 @@ Value getworkex(const Array& params, bool fHelp)
     if (IsInitialBlockDownload())
         throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Mediterraneancoin is downloading blocks...");
 
+    if (pMiningKey == NULL)
+    	throw JSONRPCError(RPC_CLIENT_SERVER_NOT_RUNNING, "startup option '-server=true' is required!");
+
     typedef map<uint256, pair<CBlock*, CScript> > mapNewBlock_t;
     static mapNewBlock_t mapNewBlock;    // FIXME: thread safety
     static vector<CBlockTemplate*> vNewBlockTemplate;
@@ -236,6 +239,9 @@ Value getwork(const Array& params, bool fHelp)
 
     if (IsInitialBlockDownload())
         throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Mediterraneancoin is downloading blocks...");
+
+    if (pMiningKey == NULL)
+    	throw JSONRPCError(RPC_CLIENT_SERVER_NOT_RUNNING, "startup option '-server=true' is required!");
 
     typedef map<uint256, pair<CBlock*, CScript> > mapNewBlock_t;
     static mapNewBlock_t mapNewBlock;    // FIXME: thread safety
@@ -377,6 +383,9 @@ Value getblocktemplate(const Array& params, bool fHelp)
 
     if (IsInitialBlockDownload())
         throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Mediterraneancoin is downloading blocks...");
+
+    if (pMiningKey == NULL)
+    	throw JSONRPCError(RPC_CLIENT_SERVER_NOT_RUNNING, "startup option '-server=true' is required!");
 
     // Update block
     static unsigned int nTransactionsUpdatedLast;

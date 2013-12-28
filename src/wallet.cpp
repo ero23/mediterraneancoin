@@ -1783,9 +1783,11 @@ set< set<CTxDestination> > CWallet::GetAddressGroupings()
 
 bool CReserveKey::GetReservedKey(CPubKey& pubkey)
 {
+
     if (nIndex == -1)
     {
         CKeyPool keypool;
+
         pwallet->ReserveKeyFromKeyPool(nIndex, keypool);
         if (nIndex != -1)
             vchPubKey = keypool.vchPubKey;
