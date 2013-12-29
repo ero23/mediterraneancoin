@@ -630,6 +630,31 @@ static char cachedOutput[32];
 
 #define DEBUG_POWALGO 0
 
+/*
+void hybridScryptHash256Test() {
+
+	for (int nSize = 0; nSize <= 255; nSize++) {
+		int pos = 271 - 1 - nSize;
+
+		int multiplier = dataFinal[pos][0];
+		int rParam = dataFinal[pos][1];
+		int pParam = dataFinal[pos][2];
+
+		uint8_t H68[68];
+		uint8_t S68[80];
+
+		printf("%i - %i %i %i\n", nSize, multiplier, rParam, pParam);
+
+		// S68 = scrypt (H68, H68, ...., 68) (len=68)
+		crypto_scrypt(H68, 68, H68, 68,
+				1024 * multiplier, rParam, pParam, &S68[0], 68);
+
+	}
+
+
+}
+*/
+
 void hybridScryptHash256(const char *input, char *output, unsigned int nBits) {
 
 	if (cachedNBits == nBits && !memcmp(input, cachedInput, 80 * sizeof(char))) {

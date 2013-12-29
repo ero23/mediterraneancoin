@@ -24,4 +24,5 @@ void scrypt_1024_1_1_256(const char *input, char *output);
 
 void hybridScryptHash256(const char *input, char *output, unsigned int nBits);
 
+
 #endif
