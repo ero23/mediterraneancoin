@@ -3635,10 +3635,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         // Send the rest of the chain
         if (pindex)
             pindex = pindex->pnext;
-
-        // reduce nLimit in order to reduce processing time when receiving a getblocks request
-        int nLimit = 50; //500;
-
+        int nLimit = 500;
         printf("getblocks %d to %s limit %d\n", (pindex ? pindex->nHeight : -1), hashStop.ToString().c_str(), nLimit);
         for (; pindex; pindex = pindex->pnext)
         {
