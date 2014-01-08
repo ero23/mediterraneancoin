@@ -74,7 +74,7 @@ double dHashesPerSec = 0.0;
 int64 nHPSTimerStart = 0;
 
 // Settings
-int64 nTransactionFee = 20000000;
+int64 nTransactionFee = 1000000;
 int64 nMinimumInputValue = DUST_HARD_LIMIT;
 
 
