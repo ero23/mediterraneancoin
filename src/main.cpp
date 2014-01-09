@@ -4638,8 +4638,13 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     uint256 hash = pblock->GetPoWHash();
     uint256 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
 
-    if (hash > hashTarget)
+    if (hash > hashTarget) {
+        printf("Mediterraneancoin RPCMiner:\n");
+        printf("proof-of-work NOT found  \n  hash: %s  \ntarget: %s\n", hash.GetHex().c_str(), hashTarget.GetHex().c_str());
+        pblock->print();
+
         return false;
+    }
 
     //// debug print
     printf("Mediterraneancoin RPCMiner:\n");
