@@ -50,6 +50,7 @@ bool fImporting = false;
 bool fReindex = false;
 bool fBenchmark = false;
 bool fTxIndex = false;
+bool fFullIndexSearch = false;
 unsigned int nCoinCacheSize = 5000;
 
 /** Fees smaller than this (in satoshi) are considered zero fee (for transaction creation) */
@@ -970,6 +971,7 @@ bool CWalletTx::AcceptWalletTransaction(bool fCheckInputs)
 // Return transaction in tx, and if it was found inside a block, its hash is placed in hashBlock
 bool GetTransaction(const uint256 &hash, CTransaction &txOut, uint256 &hashBlock, bool fAllowSlow)
 {
+
     CBlockIndex *pindexSlow = NULL;
     {
         LOCK(cs_main);
@@ -981,6 +983,9 @@ bool GetTransaction(const uint256 &hash, CTransaction &txOut, uint256 &hashBlock
                 return true;
             }
         }
+
+//        if (!fFullIndexSearch)
+//        	return false;
 
         if (fTxIndex) {
             CDiskTxPos postx;
@@ -2859,7 +2864,8 @@ bool LoadBlockIndex()
         pchMessageStart[1] = 0xc1;
         pchMessageStart[2] = 0xb7;
         pchMessageStart[3] = 0xdc;
-        hashGenesisBlock = uint256("0xda7a2c58b14b9b79a6a4ab0bae924aacd0471dfcef61619f948b4259ba2c709d");
+        hashGenesisBlock = uint256("0xd773931e52ee66afbd00c0a78297049f5ccfec68c272085fab1bc6d59881be46");
+        //hashGenesisBlock = uint256("0xda7a2c58b14b9b79a6a4ab0bae924aacd0471dfcef61619f948b4259ba2c709d");
     }
 
     //
@@ -2876,6 +2882,8 @@ bool InitBlockIndex() {
     // Check whether we're already initialized
     if (pindexGenesisBlock != NULL)
         return true;
+
+    fFullIndexSearch = GetBoolArg("-fullindexsearch", false);
 
     // Use the provided setting for -txindex in the new database
     fTxIndex = GetBoolArg("-txindex", false);
