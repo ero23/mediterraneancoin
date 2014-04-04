@@ -145,17 +145,15 @@ OBJS= \
     obj/txdb.o
 
 
-<<<<<<< HEAD
-all: mediterraneancoind
-=======
+
 ifdef USE_SSE2
 DEFS += -DUSE_SSE2
 OBJS_SSE2= obj/scrypt-sse2.o
 OBJS += $(OBJS_SSE2)
 endif
 
-all: litecoind
->>>>>>> upstream/exp-0.8.6.3-mark3
+all: mediterraneancoind
+ 
 
 test check: test_mediterraneancoin FORCE
 	./test_mediterraneancoin
