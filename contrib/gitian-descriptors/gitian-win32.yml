@@ -32,7 +32,7 @@ script: |
   unzip ../build/bitcoin-deps-win32-gitian-r9.zip
   cd $HOME/build/
   #
-  cd litecoin
+  cd mediterraneancoin
   export PATH=$STAGING/host/bin:$PATH
 
   mkdir -p $OUTDIR/src
