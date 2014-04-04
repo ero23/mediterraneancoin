@@ -47,24 +47,18 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-<<<<<<< HEAD
-OutFile mediterraneancoin-0.8.5.1-win32-setup.exe
+
+OutFile mediterraneancoin-0.8.6.2-win32-setup.exe
 InstallDir $PROGRAMFILES\Mediterraneancoin
-=======
-OutFile litecoin-0.8.6.2-win32-setup.exe
-InstallDir $PROGRAMFILES\Litecoin
->>>>>>> upstream/exp-0.8.6.3-mark3
+ 
 CRCCheck on
 XPStyle on
 BrandingText " "
 ShowInstDetails show
-<<<<<<< HEAD
-VIProductVersion 0.8.5.1
-VIAddVersionKey ProductName Mediterraneancoin
-=======
+ 
 VIProductVersion 0.8.6.2
-VIAddVersionKey ProductName Litecoin
->>>>>>> upstream/exp-0.8.6.3-mark3
+VIAddVersionKey ProductName Mediterraneancoin
+ 
 VIAddVersionKey ProductVersion "${VERSION}"
 VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey CompanyWebsite "${URL}"
