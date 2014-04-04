@@ -356,7 +356,7 @@ static inline void be32enc(void *pp, uint32_t x)
 	p[0] = (x >> 24) & 0xff;
 }
 
-
+/*
 static inline uint32_t le32dec(const void *pp)
 {
 	const uint8_t *p = (uint8_t const *)pp;
@@ -372,7 +372,7 @@ static inline void le32enc(void *pp, uint32_t x)
 	p[2] = (x >> 16) & 0xff;
 	p[3] = (x >> 24) & 0xff;
 }
-
+*/
 
 static inline uint64_t
 le64dec(const void *pp)
