@@ -797,10 +797,10 @@ bool CTxMemPool::accept(CValidationState &state, CTransaction &tx, bool fCheckIn
             dFreeCount += nSize;
         }
 
-        if (fRejectInsaneFee && nFees > CTransaction::nMinRelayTxFee * 1000)
+        if (fRejectInsaneFee && nFees > CTransaction::nMinRelayTxFee * 10000)
             return error("CTxMemPool::accept() : insane fees %s, %"PRI64d" > %"PRI64d,
                          hash.ToString().c_str(),
-                         nFees, CTransaction::nMinRelayTxFee * 1000);
+                         nFees, CTransaction::nMinRelayTxFee * 10000);
 
         // Check against previous transactions
         // This is done last to help prevent CPU exhaustion denial-of-service attacks.
@@ -2799,12 +2799,15 @@ bool VerifyDB(int nCheckLevel, int nCheckDepth)
 
     // Verify blocks in the best chain
 
-    int nCheckLevel = GetArg("-checklevel", 3);
-    int nCheckDepth = GetArg( "-checkblocks", 30); // 288
+//    int nCheckLevel = GetArg("-checklevel", 3);
+//    int nCheckDepth = GetArg( "-checkblocks", 30); // 288
+
     if (nCheckDepth == 0)
         nCheckDepth = 1000000000; // suffices until the year 19000
+
     if (nCheckDepth > nBestHeight)
         nCheckDepth = nBestHeight;
+
     nCheckLevel = std::max(0, std::min(4, nCheckLevel));
     printf("Verifying last %i blocks at level %i\n", nCheckDepth, nCheckLevel);
     CCoinsViewCache coins(*pcoinsTip, true);
