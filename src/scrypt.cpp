@@ -30,6 +30,7 @@
 #define __STDC_LIMIT_MACROS
 
 #include "scrypt.h"
+#include "util.h"
 #include <stdlib.h>
 
 
@@ -329,6 +330,16 @@ static double dataFinal [][4] = {
 
 
 
+#if defined(USE_SSE2) && !defined(USE_SSE2_ALWAYS)
+#ifdef _MSC_VER
+// MSVC 64bit is unable to use inline asm
+#include <intrin.h>
+#else
+// GCC Linux or i686-w64-mingw32
+#include <cpuid.h>
+#endif
+#endif
+
 static inline uint32_t be32dec(const void *pp)
 {
 	const uint8_t *p = (uint8_t const *)pp;
@@ -344,6 +355,7 @@ static inline void be32enc(void *pp, uint32_t x)
 	p[1] = (x >> 16) & 0xff;
 	p[0] = (x >> 24) & 0xff;
 }
+
 
 static inline uint32_t le32dec(const void *pp)
 {
@@ -388,7 +400,7 @@ le64enc(void *pp, uint64_t x)
 	p[7] = (x >> 56) & 0xff;
 }
 
-
+ 
 typedef struct HMAC_SHA256Context {
 	SHA256_CTX ictx;
 	SHA256_CTX octx;
@@ -462,7 +474,7 @@ HMAC_SHA256_Final(unsigned char digest[32], HMAC_SHA256_CTX *ctx)
  * Compute PBKDF2(passwd, salt, c, dkLen) using HMAC-SHA256 as the PRF, and
  * write the output to buf.  The value dkLen must be at most 32 * (2^32 - 1).
  */
-static void
+void
 PBKDF2_SHA256(const uint8_t *passwd, size_t passwdlen, const uint8_t *salt,
     size_t saltlen, uint64_t c, uint8_t *buf, size_t dkLen)
 {
@@ -513,7 +525,6 @@ PBKDF2_SHA256(const uint8_t *passwd, size_t passwdlen, const uint8_t *salt,
 	/* Clean PShctx, since we never called _Final on it. */
 	memset(&PShctx, 0, sizeof(HMAC_SHA256_CTX));
 }
-
 
 #define ROTL(a, b) (((a) << (b)) | ((a) >> (32 - (b))))
 
@@ -583,7 +594,7 @@ static inline void xor_salsa8(uint32_t B[16], const uint32_t Bx[16])
 	B[15] += x15;
 }
 
-void scrypt_1024_1_1_256_sp(const char *input, char *output, char *scratchpad)
+void scrypt_1024_1_1_256_sp_generic(const char *input, char *output, char *scratchpad)
 {
 	uint8_t B[128];
 	uint32_t X[32];
@@ -616,10 +627,46 @@ void scrypt_1024_1_1_256_sp(const char *input, char *output, char *scratchpad)
 	PBKDF2_SHA256((const uint8_t *)input, 80, B, 128, 1, (uint8_t *)output, 32);
 }
 
+#if defined(USE_SSE2)
+// By default, set to generic scrypt function. This will prevent crash in case when scrypt_detect_sse2() wasn't called
+void (*scrypt_1024_1_1_256_sp_detected)(const char *input, char *output, char *scratchpad) = &scrypt_1024_1_1_256_sp_generic;
+
+void scrypt_detect_sse2()
+{
+#if defined(USE_SSE2_ALWAYS)
+    printf("scrypt: using scrypt-sse2 as built.\n");
+#else // USE_SSE2_ALWAYS
+    // 32bit x86 Linux or Windows, detect cpuid features
+    unsigned int cpuid_edx=0;
+#if defined(_MSC_VER)
+    // MSVC
+    int x86cpuid[4];
+    __cpuid(x86cpuid, 1);
+    cpuid_edx = (unsigned int)buffer[3];
+#else // _MSC_VER
+    // Linux or i686-w64-mingw32 (gcc-4.6.3)
+    unsigned int eax, ebx, ecx;
+    __get_cpuid(1, &eax, &ebx, &ecx, &cpuid_edx);
+#endif // _MSC_VER
+
+    if (cpuid_edx & 1<<26)
+    {
+        scrypt_1024_1_1_256_sp_detected = &scrypt_1024_1_1_256_sp_sse2;
+        printf("scrypt: using scrypt-sse2 as detected.\n");
+    }
+    else
+    {
+        scrypt_1024_1_1_256_sp_detected = &scrypt_1024_1_1_256_sp_generic;
+        printf("scrypt: using scrypt-generic, SSE2 unavailable.\n");
+    }
+#endif // USE_SSE2_ALWAYS
+}
+#endif
+
 void scrypt_1024_1_1_256(const char *input, char *output)
 {
 	char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
-	scrypt_1024_1_1_256_sp(input, output, scratchpad);
+    scrypt_1024_1_1_256_sp(input, output, scratchpad);
 }
 
 //////

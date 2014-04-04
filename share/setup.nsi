@@ -5,9 +5,11 @@ SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.8.5.1
+ 
+!define VERSION 0.8.6.2
 !define COMPANY "Mediterraneancoin project"
 !define URL http://www.mediterraneancoin.org/
+ 
 
 # MUI Symbol Definitions
 !define MUI_ICON "../share/pixmaps/bitcoin.ico"
@@ -45,14 +47,24 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
+<<<<<<< HEAD
 OutFile mediterraneancoin-0.8.5.1-win32-setup.exe
 InstallDir $PROGRAMFILES\Mediterraneancoin
+=======
+OutFile litecoin-0.8.6.2-win32-setup.exe
+InstallDir $PROGRAMFILES\Litecoin
+>>>>>>> upstream/exp-0.8.6.3-mark3
 CRCCheck on
 XPStyle on
 BrandingText " "
 ShowInstDetails show
+<<<<<<< HEAD
 VIProductVersion 0.8.5.1
 VIAddVersionKey ProductName Mediterraneancoin
+=======
+VIProductVersion 0.8.6.2
+VIAddVersionKey ProductName Litecoin
+>>>>>>> upstream/exp-0.8.6.3-mark3
 VIAddVersionKey ProductVersion "${VERSION}"
 VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey CompanyWebsite "${URL}"

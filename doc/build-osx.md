@@ -111,8 +111,10 @@ Rerunning "openssl version" should now return the correct version.
 
 1. Clone the github tree to get the source code and go into the directory.
 
+
         git clone git@github.com:mediterraneancoin-project/mediterraneancoin.git mediterraneancoin
         cd mediterraneancoin
+ 
 
 2.  Modify source in order to pick up the `openssl` library.
 
