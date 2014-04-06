@@ -14,7 +14,7 @@ Mediterraneancoin is a lite version of Bitcoin using an experimental new proof-o
 
 The new PoW algorithm is called "HybridScryptHash256".
 
-It is described in detail here: http://www.mediterraneancoin.org/hybridscrypthash256.pdf
+It is described in detail here: https://github.com/mrtexaznl/mediterraneancoin/releases/download/v0.8.5.2/hybridscrypthash256.pdf
 
 The idea is to allow all the users of erupters and similar small devices to mine an altcoin without having "whales" coming and disrupt mining.
 With HybridScryptHash256, each HASH256 mining iteration with an erupter is encapsulated between two scrypt stages (whose parameters depend on the current difficulty).
