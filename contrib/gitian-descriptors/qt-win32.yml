@@ -60,3 +60,4 @@ script: |
   # as zip stores file timestamps, use faketime to intercept stat calls to set dates for all files to reference date
   export LD_PRELOAD=/usr/lib/faketime/libfaketime.so.1
   zip -r $OUTDIR/qt-win32-4.8.3-gitian-r4.zip *
+
