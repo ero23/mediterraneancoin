@@ -8,7 +8,7 @@ SetCompressor /SOLID lzma
  
 !define VERSION 0.8.6.2
 !define COMPANY "Mediterraneancoin project"
-!define URL http://www.mediterraneancoin.org/
+!define URL http://www.mediterraneancoin.cc/
  
 
 # MUI Symbol Definitions
