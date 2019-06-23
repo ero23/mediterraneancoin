@@ -1,7 +1,7 @@
 Mediterraneancoin integration/staging tree
 ================================
 
-http://www.mediterraneancoin.org
+http://www.mediterraneancoin.cc
 
 Copyright (c) 2009-2013 Bitcoin Developers<br/>
 Copyright (c) 2009-2013 Litecoin Developers<br/>
