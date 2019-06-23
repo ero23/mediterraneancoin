@@ -5,7 +5,7 @@ http://www.mediterraneancoin.cc
 
 Copyright (c) 2009-2013 Bitcoin Developers<br/>
 Copyright (c) 2009-2013 Litecoin Developers<br/>
-Copyright (c) 2013-2014 Mediterraneancoin Developers<br/>
+Copyright (c) 2013-2019 Mediterraneancoin Developers<br/>
 
 What is Mediterraneancoin?
 ----------------
@@ -44,7 +44,7 @@ after that, subsidy halves in 1036k blocks (~1 year)<br/>
  
 
 For more information, as well as an immediately useable, binary version of
-the Mediterraneancoin client sofware, see http://www.mediterraneancoin.org.
+the Mediterraneancoin client sofware, see http://www.mediterraneancoin.cc.
 
 License
 -------
