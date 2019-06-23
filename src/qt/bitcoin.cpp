@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
     // Application identification (must be set before OptionsModel is initialized,
     // as it is used to locate QSettings)
     QApplication::setOrganizationName("Mediterraneancoin");
-    QApplication::setOrganizationDomain("mediterraneancoin.org");
+    QApplication::setOrganizationDomain("mediterraneancoin.cc");
     if(GetBoolArg("-testnet")) // Separate UI settings for testnet
         QApplication::setApplicationName("Mediterraneancoin-Qt-testnet");
     else
