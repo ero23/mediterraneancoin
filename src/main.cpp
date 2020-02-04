@@ -1201,7 +1201,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
             nSubsidy = (1 + rand5) * COIN;
     }
 
-    nSubsidy >>= (nHeight / 1989890); //Mediterraneancoin: 518k blocks in ~1 year //fix new halving at block 3979780 till then 10 // 5 till 5849670
+    nSubsidy >>= (nHeight / 1697525); //Mediterraneancoin: 518k blocks in ~1 year //fix new halving at block 3395050 till then 10 // 5 till 5849670
 
 
         if (nHeight == 2919303) {
